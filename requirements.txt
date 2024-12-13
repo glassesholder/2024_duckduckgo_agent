@@ -1,0 +1,13 @@
+langchain
+langchain_openai
+langsmith
+pandas
+langchain_experimental
+matplotlib
+langgraph
+langchain_core
+duckduckgo-search
+langchain-community
+chromadb
+python-dotenv
+streamlit
