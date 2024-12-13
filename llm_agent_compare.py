@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
+import openai
 
 from uuid import uuid4
 from langchain_community.tools import DuckDuckGoSearchRun
@@ -58,16 +59,32 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+def is_valid_api_key(api_key):
+    """OpenAI API 키의 유효성을 검사합니다."""
+    try:
+        openai.api_key = api_key
+        # 간단한 API 호출로 키 유효성 검사
+        openai.models.list()
+        return True
+    except:
+        return False
+
 # 사이드바 설정
 with st.sidebar:
     st.markdown("### ⚙️ 설정")
     api_key = st.text_input("OpenAI API Key", type="password", help="OpenAI API 키를 입력해주세요")
-    os.environ["OPENAI_API_KEY"] = api_key
+    if api_key:
+        if is_valid_api_key(api_key):
+            st.success("✅ 유효한 API 키입니다!")
+            os.environ["OPENAI_API_KEY"] = api_key
+        else:
+            st.error("❌ 올바르지 않은 API 키입니다. 다시 확인해주세요.")
+            api_key = None
 
 # 개별 고유 ID
 # unique_id = uuid4().hex[0:8]
 
-if api_key:
+if api_key and is_valid_api_key(api_key):
     # LLM 모델 초기화
     llm = ChatOpenAI(model='gpt-4o-mini', temperature=0)
     
@@ -123,5 +140,7 @@ if api_key:
                     """, unsafe_allow_html=True)
         else:
             st.warning("⚠️ 질문을 입력해주세요.")
+elif api_key:
+    st.error("❌ 올바른 API 키를 입력해주세요.")
 else:
     st.warning("⚠️ OpenAI API 키를 입력해주세요.")
