@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import openai
 
 from uuid import uuid4
-from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_community.tools import DuckDuckGoSearchResults
 from langchain_openai import ChatOpenAI
 from langchain import hub
 from langchain.agents import AgentExecutor
@@ -86,10 +86,10 @@ with st.sidebar:
 
 if api_key and is_valid_api_key(api_key):
     # LLM 모델 초기화
-    llm = ChatOpenAI(model='gpt-4o-mini', temperature=0)
+    llm = ChatOpenAI(model='gpt-4.1-mini', temperature=0)
     
     # Agent 초기화
-    tool = DuckDuckGoSearchRun()
+    tool = DuckDuckGoSearchResults(max_results=5)
     tools = [tool]
     llm_with_tools = llm.bind_tools(tools)
     prompt = hub.pull('wfh/langsmith-agent-prompt:5d466cbc')
@@ -122,7 +122,7 @@ if api_key and is_valid_api_key(api_key):
             with col1:
                 st.markdown("### 🤖 LLM 답변")
                 with st.spinner("LLM이 답변을 생성 중..."):
-                    llm_response = llm([HumanMessage(content=user_input)])
+                    llm_response = llm.invoke([HumanMessage(content=user_input)])
                     st.markdown(f"""
                         <div class="response-box">
                             {llm_response.content}

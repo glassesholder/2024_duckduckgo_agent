@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM vs 덕덕고 Agent</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-robot"></i> LLM vs 덕덕고 Agent</h1>
+                <p class="subtitle">일반 LLM과 검색 기능이 있는 덕덕고 Agent의 답변을 비교해보세요</p>
+            </div>
+        </header>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel">
+            <div class="settings-content">
+                <div class="setting-group">
+                    <label for="apiKey"><i class="fas fa-key"></i> OpenAI API Key</label>
+                    <div class="api-key-container">
+                        <input type="password" id="apiKey" placeholder="OpenAI API 키를 입력하세요">
+                        <button type="button" id="validateBtn" class="validate-btn" disabled>
+                            <i class="fas fa-check"></i> 검증
+                        </button>
+                    </div>
+                    <div id="apiKeyStatus" class="status-message"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="input-section">
+                <label for="userInput"><i class="fas fa-comment"></i> 질문을 입력하세요</label>
+                <textarea id="userInput" placeholder="예: 2024년 AIDT 도입 과목을 알려줄 수 있어?"></textarea>
+                <button id="compareBtn" class="compare-btn">
+                    <i class="fas fa-search"></i> 답변 비교하기
+                </button>
+            </div>
+
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <div class="spinner"></div>
+                <p>답변을 생성하고 있습니다...</p>
+            </div>
+
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3><i class="fas fa-robot"></i> 일반 LLM 답변</h3>
+                        <span class="result-badge llm-badge">GPT-4.1-mini</span>
+                    </div>
+                    <div id="llmResponse" class="result-content"></div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3><i class="fas fa-search"></i> 덕덕고 Agent 답변</h3>
+                        <span class="result-badge agent-badge">웹 검색 포함</span>
+                    </div>
+                    <div id="agentResponse" class="result-content"></div>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
